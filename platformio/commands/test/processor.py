@@ -33,7 +33,7 @@ TRANSPORT_OPTIONS = {
     },
     "mbed": {
         "include": "#include <mbed.h>",
-        "object": "#if MBED_MAJOR_VERSION == 6\nUnbufferedSerial pc(USBTX, USBRX);\n#else\nSerial pc(USBTX, USBRX);\n#endif",
+        "object": "#if MBED_MAJOR_VERSION == 6\nUnbufferedSerial pc(USBTX, USBRX);\n#else\nRawSerial pc(USBTX, USBRX);\n#endif",
         "putchar": "#if MBED_MAJOR_VERSION == 6\npc.write(&c, 1);\n#else\npc.putc(c);\n#endif",
         "flush": "",
         "begin": "pc.baud($baudrate);",
@@ -211,6 +211,7 @@ class TestProcessorBase(object):
         transport_options = TRANSPORT_OPTIONS[self.get_transport()]
         tpl = Template(file_tpl).substitute(transport_options)
         data = Template(tpl).substitute(baudrate=self.get_baudrate())
+        print(123, data)
 
         delete_tmptest_files(test_dir)
         tmp_file = join(
